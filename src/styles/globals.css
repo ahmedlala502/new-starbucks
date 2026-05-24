@@ -1,0 +1,61 @@
+.deck-slide-stage {
+  width: min(calc((100vh - 112px) * 16 / 9), calc(100vw - 40px));
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.deck-slide-stage > .size-full {
+  width: 100%;
+  height: 100%;
+}
+
+.size-full :is(h1, h2) {
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.08;
+}
+
+.size-full :is(h1, h2) .font-black,
+.size-full :is(h1, h2) .font-extrabold {
+  font-weight: 800;
+}
+
+.size-full h3 {
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.size-full :is(p, span, div, td).font-black {
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.size-full :is(p, span, div, td):is(.text-2xl, .text-3xl, .text-4xl, .text-5xl, .text-6xl).font-black {
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.size-full :is(.bg-white, .bg-gray-50, .bg-orange-50, .bg-purple-50).rounded,
+.size-full :is(.bg-white, .bg-gray-50, .bg-orange-50, .bg-purple-50).rounded-lg,
+.size-full :is(.bg-white, .bg-gray-50, .bg-orange-50, .bg-purple-50).rounded-xl {
+  box-shadow: 0 14px 34px -26px rgba(15, 23, 42, 0.72);
+}
+
+.size-full :is(table, .deck-table) {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.size-full thead th {
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.size-full tbody td {
+  font-weight: 700;
+}
+
+.size-full :is(.bg-purple-600, .bg-orange-500, .bg-gray-900).rounded-lg,
+.size-full :is(.bg-purple-600, .bg-orange-500, .bg-gray-900).rounded-xl {
+  box-shadow: 0 18px 42px -24px currentColor;
+}
