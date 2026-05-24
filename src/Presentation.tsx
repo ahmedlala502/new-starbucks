@@ -38,6 +38,7 @@ import LiveReportSlide from './slides/LiveReportSlide';
 import EditPanel from './EditPanel';
 import ExportModal from './ExportModal';
 import CustomizePanel from './CustomizePanel';
+import SlideWrapper from './SlideWrapper';
 import type { SlideCustomization } from './CustomizePanel';
 
 const W = 1280;
@@ -73,9 +74,10 @@ export default function Presentation() {
   const [showCustomize, setShowCustomize] = useState(false);
   const captureStageRef = useRef<HTMLDivElement>(null);
   const [captureSlideIndex, setCaptureSlideIndex] = useState(-1);
-  const [slideCustomizations, setSlideCustomizations] = useState<Record<number, SlideCustomization>>(
-    {}
-  );
+  const [slideCustomizations, setSlideCustomizations] = useState<Record<number, SlideCustomization>>(() => {
+    const saved = localStorage.getItem('slide-customizations');
+    return saved ? JSON.parse(saved) : {};
+  });
 
   const slidesComponents = ALL_SLIDES.map((s) => s.component);
   const CurrentSlideComponent = ALL_SLIDES[currentSlide].component;
@@ -86,10 +88,10 @@ export default function Presentation() {
   };
 
   const handleCustomizationChange = (index: number, config: SlideCustomization) => {
-    setSlideCustomizations((prev) => ({ ...prev, [index]: config }));
+    const updated = { ...slideCustomizations, [index]: config };
+    setSlideCustomizations(updated);
     // Persist to localStorage
-    const saved = { ...slideCustomizations, [index]: config };
-    localStorage.setItem('slide-customizations', JSON.stringify(saved));
+    localStorage.setItem('slide-customizations', JSON.stringify(updated));
   };
 
   const waitFrames = () =>
@@ -458,11 +460,14 @@ document.addEventListener('keydown',e=>{if(e.key==='ArrowLeft')prev();if(e.key==
             justifyContent: viewMode === 'deck' ? 'center' : undefined,
           }}
         >
-          {viewMode === 'deck' ? (
+          {viewMode === 'deck' && (
             <Box className="deck-slide-stage" sx={{ bgcolor: 'white', boxShadow: 4 }}>
-              <CurrentSlideComponent />
+              <SlideWrapper customization={slideCustomizations[currentSlide]}>
+                <CurrentSlideComponent />
+              </SlideWrapper>
             </Box>
-          ) : (
+          )}
+          {viewMode === 'grid' && (
             ALL_SLIDES.map((s, i) => (
               <Box
                 key={i}
